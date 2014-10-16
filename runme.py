@@ -1,3 +1,4 @@
+import os
 import coopr.environ
 import pandas as pd
 import vicus
@@ -58,7 +59,8 @@ for scenario in scenarios:
     prob.load(result)
     
     # write report to spreadsheet
-    vicus.report(prob, '{}.xlsx'.format(sce), ['ElecAC', 'ElecDC'])
+    vicus.report(prob, os.path.join('results',
+        '{}.xlsx').format(sce), ['ElecAC', 'ElecDC'])
     
     # example: customise color of commodity
     vicus.COLOURS['ElecDC'] = (0, 121, 239)
@@ -67,8 +69,7 @@ for scenario in scenarios:
     for co in ['ElecAC', 'ElecDC']:
         fig = vicus.plot(prob, co=co)
         
-        for ext in ['png', 'pdf']:
-            fig_filename = '{}-{}.{}'.format(sce, co, ext)
-            fig.savefig(fig_filename, bbox_inches='tight') 
-
-
+    for ext in ['png', 'pdf']:
+        fig_filename = os.path.join(
+            'results', '{}-{}.{}').format(sce, co, ext)
+        fig.savefig(fig_filename, bbox_inches='tight')
